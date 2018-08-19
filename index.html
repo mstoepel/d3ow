@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3: A flexible, scalable bar chart</title>
+		<script type="text/javascript" src="d3.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */
+		</style>
+	</head>
+	<body>
+
+        <p> Click on this text to update the chart with new data values as many times as you like!</p>
+
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 800;
+			var h = 500;
+			var padding = 30;
+
+			// Still need to figure out a way to properly read in ow.csv
+
+
+			dataset = [{
+                        "playerId": 4646,
+                        "teamId": 4406,
+                        "role": "offense",
+                        "name": "Asher",
+                        "team": "GLA",
+                        "eliminations_avg_per_10m": 18.2815626933384,
+                        "deaths_avg_per_10m": 5.96850596370067,
+                        "hero_damage_avg_per_10m": 7464.652823157578,
+                        "healing_avg_per_10m": 97.60766306210799,
+                        "ultimates_earned_avg_per_10m": 5.534608114966373,
+                        "final_blows_avg_per_10m": 8.832231765347034,
+                        "time_played_total": 62226.627946555614
+                    },
+                        {
+                            "playerId": 5443,
+                            "teamId": 4407,
+                            "role": "tank",
+                            "name": "aWesomeGuy",
+                            "team": "FLA",
+                            "eliminations_avg_per_10m": 11.96920680100601,
+                            "deaths_avg_per_10m": 6.982037300586839,
+                            "hero_damage_avg_per_10m": 4999.388428587297,
+                            "healing_avg_per_10m": 27.96616744030963,
+                            "ultimates_earned_avg_per_10m": 3.247459209575274,
+                            "final_blows_avg_per_10m": 3.4794205816877937,
+                            "time_played_total": 51732.7514090538
+                        },
+                        {
+                            "playerId": 4491,
+                            "teamId": 4404,
+                            "role": "offense",
+                            "name": "BABYBAY",
+                            "team": "SFS",
+                            "eliminations_avg_per_10m": 16.82464642197654,
+                            "deaths_avg_per_10m": 7.310018790238082,
+                            "hero_damage_avg_per_10m": 9295.289901313103,
+                            "healing_avg_per_10m": 690.0459490519377,
+                            "ultimates_earned_avg_per_10m": 4.881633863322257,
+                            "final_blows_avg_per_10m": 8.79357135651089,
+                            "time_played_total": 72393.79476106167
+                        },
+                        {
+                            "playerId": 4624,
+                            "teamId": 4525,
+                            "role": "support",
+                            "name": "Bani",
+                            "team": "HOU",
+                            "eliminations_avg_per_10m": 1.083849943122369,
+                            "deaths_avg_per_10m": 4.84162908724124,
+                            "hero_damage_avg_per_10m": 346.85321381937484,
+                            "healing_avg_per_10m": 10668.828942574113,
+                            "ultimates_earned_avg_per_10m": 4.082285115113592,
+                            "final_blows_avg_per_10m": 0.22066406027641042,
+                            "time_played_total": 92448.22185564041
+                        },
+                        {
+                            "playerId": 4655,
+                            "teamId": 4410,
+                            "role": "support",
+                            "name": "Bdosin",
+                            "team": "LDN",
+                            "eliminations_avg_per_10m": 13.311629016720836,
+                            "deaths_avg_per_10m": 5.338658177082295,
+                            "hero_damage_avg_per_10m": 5937.148079390052,
+                            "healing_avg_per_10m": 6915.991882632268,
+                            "ultimates_earned_avg_per_10m": 3.9972597047377016,
+                            "final_blows_avg_per_10m": 4.4551668137709965,
+                            "time_played_total": 111376.30098748207
+                        },
+                        {
+                            "playerId": 4643,
+                            "teamId": 4406,
+                            "role": "support",
+                            "name": "BigGoose",
+                            "team": "GLA",
+                            "eliminations_avg_per_10m": 3.8815033254858426,
+                            "deaths_avg_per_10m": 4.727583825647925,
+                            "hero_damage_avg_per_10m": 1060.6769527888364,
+                            "healing_avg_per_10m": 9200.666599221184,
+                            "ultimates_earned_avg_per_10m": 3.798639771346257,
+                            "final_blows_avg_per_10m": 0.8940541367692111,
+                            "time_played_total": 137575.56163710356
+                        },
+                        {
+                            "playerId": 4656,
+                            "teamId": 4410,
+                            "role": "offense",
+                            "name": "birdring",
+                            "team": "LDN",
+                            "eliminations_avg_per_10m": 16.527128260434246,
+                            "deaths_avg_per_10m": 5.835504546276783,
+                            "hero_damage_avg_per_10m": 7500.115295496218,
+                            "healing_avg_per_10m": 186.96176765730624,
+                            "ultimates_earned_avg_per_10m": 4.436382577139493,
+                            "final_blows_avg_per_10m": 8.75034198197947,
+                            "time_played_total": 102921.69172984362
+                        },
+                        {
+                            "playerId": 4639,
+                            "teamId": 4406,
+                            "role": "flex",
+                            "name": "Bischu",
+                            "team": "GLA",
+                            "eliminations_avg_per_10m": 17.122945199866518,
+                            "deaths_avg_per_10m": 4.620477276154457,
+                            "hero_damage_avg_per_10m": 6325.482465445582,
+                            "healing_avg_per_10m": 94.105307397987,
+                            "ultimates_earned_avg_per_10m": 3.3801138576359877,
+                            "final_blows_avg_per_10m": 5.826248886188347,
+                            "time_played_total": 121416.02836036682
+                        }
+                    ];
+
+
+			//Create scale functions
+			var xScale = d3.scaleLinear()
+								 .domain([0, d3.max(dataset, function(d) { return d.hero_damage_avg_per_10m; })])
+								 .range([padding, w - padding * 2]);
+
+			var yScale = d3.scaleLinear()
+								 .domain([0, d3.max(dataset, function(d) { return d.final_blows_avg_per_10m; })])
+								 .range([h - padding, padding]);
+
+			var aScale = d3.scaleLinear()
+				.domain([0, d3.max(dataset, function(d) { return d.time_played_total; })])
+				.range([100, 3000]);
+
+			var tScale = d3.scaleBand()
+				.domain(["tank", "offense", "flex", "support"])
+				.range([0 ,255]);
+
+			//Define X axis
+			var xAxis = d3.axisBottom()
+							  .scale(xScale)
+							  .ticks(5);
+
+			//Define Y axis
+			var yAxis = d3.axisLeft()
+							  .scale(yScale)
+							  .ticks(5);
+
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+			//Create circles
+			svg.selectAll("circle")
+			   .data(dataset)
+			   .enter()
+			   .append("circle")
+			   .attr("cx", function(d) {
+			   		return xScale(d.hero_damage_avg_per_10m);
+			   })
+			   .attr("cy", function(d) {
+			   		return yScale(d.final_blows_avg_per_10m);
+			   })
+			   .attr("r", function(d) {
+			       return aScale(d.time_played_total) / 100;
+			   })
+				.attr("fill", function(d) {
+				    return "rgb(0, " + tScale(d.role) +", 0)";
+				});
+
+			svg.selectAll("text")
+				.data(dataset)
+				.enter()
+				.append("text")
+				.text(function(d) {
+				    return d.name;
+				})
+				.attr("x", function(d) {
+				    return xScale(d.hero_damage_avg_per_10m);
+				})
+				.attr("y", function(d) {
+				    return yScale(d.final_blows_avg_per_10m);
+				})
+				.attr("font-family", "sans-serif")
+			    .attr("font-size", "11px")
+			    .attr("fill", "green");
+
+			//Create X axis
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + (h - padding) + ")")
+				.call(xAxis);
+
+			//Create Y axis
+			svg.append("g")
+				.attr("class", "y axis")
+				.attr("transform", "translate(" + padding + ",0)")
+				.call(yAxis);
+
+			d3.select("p")
+				.on("click", function() {
+
+                    dataset = [{"playerId":3987,"teamId":4405,"role":"offense","name":"Soon","team":"VAL","eliminations_avg_per_10m":17.04596717400255,"deaths_avg_per_10m":6.189226410434996,"hero_damage_avg_per_10m":7908.896727258963,"healing_avg_per_10m":97.03786498085576,"ultimates_earned_avg_per_10m":5.533075339855045,"final_blows_avg_per_10m":8.427585736314118,"time_played_total":128933.72242039442},
+						{"playerId":4637,"teamId":4405,"role":"flex","name":"Space","team":"VAL","eliminations_avg_per_10m":17.027316727337535,"deaths_avg_per_10m":3.5615877395290547,"hero_damage_avg_per_10m":6702.565068729095,"healing_avg_per_10m":257.56422906822223,"ultimates_earned_avg_per_10m":4.203974569261463,"final_blows_avg_per_10m":6.277501677891393,"time_played_total":73787.31600046158},
+						{"playerId":4094,"teamId":4525,"role":"flex","name":"SPREE","team":"HOU","eliminations_avg_per_10m":20.41727429475258,"deaths_avg_per_10m":4.69693164527172,"hero_damage_avg_per_10m":8191.722176481358,"healing_avg_per_10m":397.5800733337393,"ultimates_earned_avg_per_10m":4.3614365277523115,"final_blows_avg_per_10m":6.326479358937419,"time_played_total":12518.811096429825},
+						{"playerId":4610,"teamId":4402,"role":"offense","name":"STRIKER","team":"BOS","eliminations_avg_per_10m":19.109183438511614,"deaths_avg_per_10m":5.048782883731414,"hero_damage_avg_per_10m":8203.647995276737,"healing_avg_per_10m":62.406792828324306,"ultimates_earned_avg_per_10m":5.674954568357253,"final_blows_avg_per_10m":9.550212896286395,"time_played_total":137023.12338072062},
+						{"playerId":4490,"teamId":4404,"role":"flex","name":"super","team":"SFS","eliminations_avg_per_10m":14.72585839067458,"deaths_avg_per_10m":6.303946163172089,"hero_damage_avg_per_10m":5935.927424783358,"healing_avg_per_10m":188.46211904505037,"ultimates_earned_avg_per_10m":3.5465941171570394,"final_blows_avg_per_10m":4.725462020888111,"time_played_total":60057.6194974184},
+						{"playerId":4144,"teamId":4406,"role":"offense","name":"Surefour","team":"GLA","eliminations_avg_per_10m":15.89110269580813,"deaths_avg_per_10m":5.647339100981914,"hero_damage_avg_per_10m":7731.362204323417,"healing_avg_per_10m":323.83340440570583,"ultimates_earned_avg_per_10m":4.57519389572031,"final_blows_avg_per_10m":8.50285454865886,"time_played_total":113044.38932824135},
+						{"playerId":3380,"teamId":4523,"role":"offense","name":"Taimou","team":"DAL","eliminations_avg_per_10m":14.07940499304225,"deaths_avg_per_10m":6.752022346422906,"hero_damage_avg_per_10m":6963.706839401897,"healing_avg_per_10m":657.3766176006403,"ultimates_earned_avg_per_10m":4.196745719079901,"final_blows_avg_per_10m":7.513528626094662,"time_played_total":70912.08758419752},
+						{"playerId":4104,"teamId":4409,"role":"support","name":"tobi","team":"SEO","eliminations_avg_per_10m":4.928641533995518,"deaths_avg_per_10m":4.740327167083962,"hero_damage_avg_per_10m":1403.8373395523402,"healing_avg_per_10m":9538.855661185495,"ultimates_earned_avg_per_10m":3.8507041233983426,"final_blows_avg_per_10m":0.8571550493905247,"time_played_total":92398.6856943965},
+						{"playerId":3504,"teamId":4407,"role":"offense","name":"TviQ","team":"FLA","eliminations_avg_per_10m":13.695826994177196,"deaths_avg_per_10m":7.200647940100266,"hero_damage_avg_per_10m":7956.176701613289,"healing_avg_per_10m":598.0800072143877,"ultimates_earned_avg_per_10m":4.28633164542455,"final_blows_avg_per_10m":7.3417417173049335,"time_played_total":123322.23535811901},
+						{"playerId":3983,"teamId":4523,"role":"support","name":"Unkoe","team":"DAL","eliminations_avg_per_10m":9.923942080863494,"deaths_avg_per_10m":5.804376061788689,"hero_damage_avg_per_10m":4600.493522200849,"healing_avg_per_10m":7707.624688432323,"ultimates_earned_avg_per_10m":3.908964763735569,"final_blows_avg_per_10m":3.092242822298046,"time_played_total":116808.4205403924},
+						{"playerId":4633,"teamId":4405,"role":"support","name":"Verbo","team":"VAL","eliminations_avg_per_10m":4.66221658996889,"deaths_avg_per_10m":4.741237210137854,"hero_damage_avg_per_10m":1432.3081744872043,"healing_avg_per_10m":8724.501500280716,"ultimates_earned_avg_per_10m":3.0976083106233974,"final_blows_avg_per_10m":0.726989705554471,"time_played_total":37964.774176478386},
+						{"playerId":5809,"teamId":4406,"role":"flex","name":"Void","team":"GLA","eliminations_avg_per_10m":16.914070455012506,"deaths_avg_per_10m":4.464004066819282,"hero_damage_avg_per_10m":6849.143796667245,"healing_avg_per_10m":52.33695878008771,"ultimates_earned_avg_per_10m":3.1534707627989422,"final_blows_avg_per_10m":5.119270718829451,"time_played_total":14650.52428740263},
+						{"playerId":4638,"teamId":4409,"role":"offense","name":"Wekeed","team":"SEO","eliminations_avg_per_10m":16.50191109743647,"deaths_avg_per_10m":6.156032083157151,"hero_damage_avg_per_10m":8073.168566352806,"healing_avg_per_10m":821.4752530736554,"ultimates_earned_avg_per_10m":4.377102659887404,"final_blows_avg_per_10m":8.871240150253081,"time_played_total":51266.78934365511},
+						{"playerId":4640,"teamId":4409,"role":"flex","name":"XepheR","team":"SEO","eliminations_avg_per_10m":16.308134799577147,"deaths_avg_per_10m":4.708003201068402,"hero_damage_avg_per_10m":6465.084165578445,"healing_avg_per_10m":51.2083192465027,"ultimates_earned_avg_per_10m":3.9071572957320244,"final_blows_avg_per_10m":5.338972702242517,"time_played_total":24723.857446312904},
+						{"playerId":4617,"teamId":4408,"role":"tank","name":"Xushu","team":"SHD","eliminations_avg_per_10m":10.438285466430976,"deaths_avg_per_10m":6.771862740218177,"hero_damage_avg_per_10m":6072.89107264755,"healing_avg_per_10m":389.2363087315682,"ultimates_earned_avg_per_10m":4.007019372910164,"final_blows_avg_per_10m":4.247440535284774,"time_played_total":29947.4469255805},
+						{"playerId":3384,"teamId":4407,"role":"flex","name":"zappis","team":"FLA","eliminations_avg_per_10m":9.853984517062083,"deaths_avg_per_10m":6.1385477319403146,"hero_damage_avg_per_10m":5581.554639577643,"healing_avg_per_10m":559.1349277952141,"ultimates_earned_avg_per_10m":3.9577478798036236,"final_blows_avg_per_10m":2.8269627712883025,"time_played_total":7428.467121422291},
+						{"playerId":3503,"teamId":4407,"role":"support","name":"Zebbosai","team":"FLA","eliminations_avg_per_10m":3.4804959156662685,"deaths_avg_per_10m":5.957817771742665,"hero_damage_avg_per_10m":1282.5714583259246,"healing_avg_per_10m":8937.563464247696,"ultimates_earned_avg_per_10m":3.8855333293973904,"final_blows_avg_per_10m":0.8760111506277752,"time_played_total":127395.6386514306},
+						{"playerId":4098,"teamId":4409,"role":"flex","name":"ZUNBA","team":"SEO","eliminations_avg_per_10m":16.768202755589865,"deaths_avg_per_10m":4.437004514012325,"hero_damage_avg_per_10m":6495.311346708968,"healing_avg_per_10m":110.03957400584181,"ultimates_earned_avg_per_10m":3.5128605374426316,"final_blows_avg_per_10m":6.552514821822467,"time_played_total":107775.41435664892},
+						{"playerId":4020,"teamId":4407,"role":"support","name":"Zuppeh","team":"FLA","eliminations_avg_per_10m":8.52926887690631,"deaths_avg_per_10m":5.953062319386845,"hero_damage_avg_per_10m":4561.727668400956,"healing_avg_per_10m":7663.479989516441,"ultimates_earned_avg_per_10m":4.0833109421743625,"final_blows_avg_per_10m":2.7787237092074673,"time_played_total":127396.61695295572}
+						];
+
+                    xScale.domain([0, d3.max(dataset, function (d) {
+                        return d.hero_damage_avg_per_10m;
+                    })]);
+
+                    yScale.domain([0, d3.max(dataset, function (d) {
+                        return d.final_blows_avg_per_10m;
+                    })]);
+
+                    svg.selectAll("circle")
+                        .data(dataset)
+                        .transition()
+                        .duration(1000)
+                        .attr("cx", function (d) {
+                            return xScale(d.hero_damage_avg_per_10m);
+                        })
+                        .attr("cy", function (d) {
+                            return yScale(d.final_blows_avg_per_10m);
+                        })
+                        .attr("r", function (d) {
+                            return aScale(d.time_played_total) / 100;
+                        })
+                        .attr("fill", function (d) {
+                            return "rgb(0, " + tScale(d.role) + ", 0)";
+                        });
+
+                    // Update text
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+						.duration(1000)
+						.text(function(d) {
+						    return d.name;
+						})
+						.attr("x", function(d) {
+						    return xScale(d.hero_damage_avg_per_10m);
+						})
+						.attr("y", function(d) {
+						    return yScale(d.final_blows_avg_per_10m);
+						});
+
+					//Update X axis
+					svg.select(".x.axis")
+				    	.transition()
+				    	.duration(1000)
+						.call(xAxis);
+
+					//Update Y axis
+					svg.select(".y.axis")
+				    	.transition()
+				    	.duration(1000)
+						.call(yAxis);
+
+                });
+
+		</script>
+	</body>
+</html>
