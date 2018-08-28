@@ -21,201 +21,105 @@
 
 			// Still need to figure out a way to properly read in ow.csv
 
+			var dataset;
 
-			dataset = [{
-                        "playerId": 4646,
-                        "teamId": 4406,
-                        "role": "offense",
-                        "name": "Asher",
-                        "team": "GLA",
-                        "eliminations_avg_per_10m": 18.2815626933384,
-                        "deaths_avg_per_10m": 5.96850596370067,
-                        "hero_damage_avg_per_10m": 7464.652823157578,
-                        "healing_avg_per_10m": 97.60766306210799,
-                        "ultimates_earned_avg_per_10m": 5.534608114966373,
-                        "final_blows_avg_per_10m": 8.832231765347034,
-                        "time_played_total": 62226.627946555614
-                    },
-                        {
-                            "playerId": 5443,
-                            "teamId": 4407,
-                            "role": "tank",
-                            "name": "aWesomeGuy",
-                            "team": "FLA",
-                            "eliminations_avg_per_10m": 11.96920680100601,
-                            "deaths_avg_per_10m": 6.982037300586839,
-                            "hero_damage_avg_per_10m": 4999.388428587297,
-                            "healing_avg_per_10m": 27.96616744030963,
-                            "ultimates_earned_avg_per_10m": 3.247459209575274,
-                            "final_blows_avg_per_10m": 3.4794205816877937,
-                            "time_played_total": 51732.7514090538
-                        },
-                        {
-                            "playerId": 4491,
-                            "teamId": 4404,
-                            "role": "offense",
-                            "name": "BABYBAY",
-                            "team": "SFS",
-                            "eliminations_avg_per_10m": 16.82464642197654,
-                            "deaths_avg_per_10m": 7.310018790238082,
-                            "hero_damage_avg_per_10m": 9295.289901313103,
-                            "healing_avg_per_10m": 690.0459490519377,
-                            "ultimates_earned_avg_per_10m": 4.881633863322257,
-                            "final_blows_avg_per_10m": 8.79357135651089,
-                            "time_played_total": 72393.79476106167
-                        },
-                        {
-                            "playerId": 4624,
-                            "teamId": 4525,
-                            "role": "support",
-                            "name": "Bani",
-                            "team": "HOU",
-                            "eliminations_avg_per_10m": 1.083849943122369,
-                            "deaths_avg_per_10m": 4.84162908724124,
-                            "hero_damage_avg_per_10m": 346.85321381937484,
-                            "healing_avg_per_10m": 10668.828942574113,
-                            "ultimates_earned_avg_per_10m": 4.082285115113592,
-                            "final_blows_avg_per_10m": 0.22066406027641042,
-                            "time_played_total": 92448.22185564041
-                        },
-                        {
-                            "playerId": 4655,
-                            "teamId": 4410,
-                            "role": "support",
-                            "name": "Bdosin",
-                            "team": "LDN",
-                            "eliminations_avg_per_10m": 13.311629016720836,
-                            "deaths_avg_per_10m": 5.338658177082295,
-                            "hero_damage_avg_per_10m": 5937.148079390052,
-                            "healing_avg_per_10m": 6915.991882632268,
-                            "ultimates_earned_avg_per_10m": 3.9972597047377016,
-                            "final_blows_avg_per_10m": 4.4551668137709965,
-                            "time_played_total": 111376.30098748207
-                        },
-                        {
-                            "playerId": 4643,
-                            "teamId": 4406,
-                            "role": "support",
-                            "name": "BigGoose",
-                            "team": "GLA",
-                            "eliminations_avg_per_10m": 3.8815033254858426,
-                            "deaths_avg_per_10m": 4.727583825647925,
-                            "hero_damage_avg_per_10m": 1060.6769527888364,
-                            "healing_avg_per_10m": 9200.666599221184,
-                            "ultimates_earned_avg_per_10m": 3.798639771346257,
-                            "final_blows_avg_per_10m": 0.8940541367692111,
-                            "time_played_total": 137575.56163710356
-                        },
-                        {
-                            "playerId": 4656,
-                            "teamId": 4410,
-                            "role": "offense",
-                            "name": "birdring",
-                            "team": "LDN",
-                            "eliminations_avg_per_10m": 16.527128260434246,
-                            "deaths_avg_per_10m": 5.835504546276783,
-                            "hero_damage_avg_per_10m": 7500.115295496218,
-                            "healing_avg_per_10m": 186.96176765730624,
-                            "ultimates_earned_avg_per_10m": 4.436382577139493,
-                            "final_blows_avg_per_10m": 8.75034198197947,
-                            "time_played_total": 102921.69172984362
-                        },
-                        {
-                            "playerId": 4639,
-                            "teamId": 4406,
-                            "role": "flex",
-                            "name": "Bischu",
-                            "team": "GLA",
-                            "eliminations_avg_per_10m": 17.122945199866518,
-                            "deaths_avg_per_10m": 4.620477276154457,
-                            "hero_damage_avg_per_10m": 6325.482465445582,
-                            "healing_avg_per_10m": 94.105307397987,
-                            "ultimates_earned_avg_per_10m": 3.3801138576359877,
-                            "final_blows_avg_per_10m": 5.826248886188347,
-                            "time_played_total": 121416.02836036682
-                        }
-                    ];
+			var rowConverter = function(d) {
+			    return {
+                    hero_damage_avg_per_10m: parseFloat(d.hero_damage_avg_per_10m),
+                    final_blows_avg_per_10m: parseFloat(d.final_blows_avg_per_10m),
+                    time_played_total: parseFloat(d.time_played_total),
+                    role: d.role
+                };
+            }
 
+			d3.csv('ow.csv', rowConverter).then(function(data){
+			    // console.log(data)
+                dataset = data;
 
-			//Create scale functions
-			var xScale = d3.scaleLinear()
-								 .domain([0, d3.max(dataset, function(d) { return d.hero_damage_avg_per_10m; })])
+                var xScale = d3.scaleLinear()
+								 // .domain([0, 100])
+                                 .domain([0, d3.max(dataset, function(d) { return d.hero_damage_avg_per_10m; })])
 								 .range([padding, w - padding * 2]);
 
-			var yScale = d3.scaleLinear()
-								 .domain([0, d3.max(dataset, function(d) { return d.final_blows_avg_per_10m; })])
+
+                var yScale = d3.scaleLinear()
+								 // .domain([0, 100])
+                                 .domain([0, d3.max(dataset, function(d) { return d.final_blows_avg_per_10m; })])
 								 .range([h - padding, padding]);
 
-			var aScale = d3.scaleLinear()
-				.domain([0, d3.max(dataset, function(d) { return d.time_played_total; })])
+                var aScale = d3.scaleLinear()
+				// .domain([0, 100])
+                .domain([0, d3.max(dataset, function(d) { return d.time_played_total; })])
 				.range([100, 3000]);
 
-			var tScale = d3.scaleBand()
-				.domain(["tank", "offense", "flex", "support"])
-				.range([0 ,255]);
+			    var tScale = d3.scaleBand()
+			    	.domain(["tank", "offense", "flex", "support"])
+			    	.range([0 ,255]);
 
-			//Define X axis
-			var xAxis = d3.axisBottom()
-							  .scale(xScale)
-							  .ticks(5);
+			    //Define X axis
+			    var xAxis = d3.axisBottom()
+			    				  .scale(xScale)
+			    				  .ticks(5);
 
-			//Define Y axis
-			var yAxis = d3.axisLeft()
-							  .scale(yScale)
-							  .ticks(5);
+			    //Define Y axis
+			    var yAxis = d3.axisLeft()
+			    				  .scale(yScale)
+			    				  .ticks(5);
 
-			//Create SVG element
-			var svg = d3.select("body")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
+			    //Create SVG element
+			    var svg = d3.select("body")
+			    			.append("svg")
+			    			.attr("width", w)
+			    			.attr("height", h);
 
-			//Create circles
-			svg.selectAll("circle")
-			   .data(dataset)
-			   .enter()
-			   .append("circle")
-			   .attr("cx", function(d) {
-			   		return xScale(d.hero_damage_avg_per_10m);
-			   })
-			   .attr("cy", function(d) {
-			   		return yScale(d.final_blows_avg_per_10m);
-			   })
-			   .attr("r", function(d) {
-			       return aScale(d.time_played_total) / 100;
-			   })
-				.attr("fill", function(d) {
-				    return "rgb(0, " + tScale(d.role) +", 0)";
-				});
+			    //Create circles
+			    svg.selectAll("circle")
+			       .data(dataset)
+			       .enter()
+			       .append("circle")
+			       .attr("cx", function(d) {
+			       		return xScale(d.hero_damage_avg_per_10m);
+			       })
+			       .attr("cy", function(d) {
+			       		return yScale(d.final_blows_avg_per_10m);
+			       })
+			       .attr("r", function(d) {
+			           return aScale(d.time_played_total) / 100;
+			       })
+			    	.attr("fill", function(d) {
+			    	    return "rgb(0, " + tScale(d) +", 0)";
+			    	});
 
-			svg.selectAll("text")
-				.data(dataset)
-				.enter()
-				.append("text")
-				.text(function(d) {
-				    return d.name;
-				})
-				.attr("x", function(d) {
-				    return xScale(d.hero_damage_avg_per_10m);
-				})
-				.attr("y", function(d) {
-				    return yScale(d.final_blows_avg_per_10m);
-				})
-				.attr("font-family", "sans-serif")
-			    .attr("font-size", "11px")
-			    .attr("fill", "green");
+			    svg.selectAll("text")
+			    	.data(dataset)
+			    	.enter()
+			    	.append("text")
+			    	.text(function(d) {
+			    	    return d.name;
+			    	})
+			    	.attr("x", function(d) {
+			    	    return xScale(d.hero_damage_avg_per_10m);
+			    	})
+			    	.attr("y", function(d) {
+			    	    return yScale(d.final_blows_avg_per_10m);
+			    	})
+			    	.attr("font-family", "sans-serif")
+			        .attr("font-size", "11px")
+			        .attr("fill", "green");
 
-			//Create X axis
-			svg.append("g")
-				.attr("class", "x axis")
-				.attr("transform", "translate(0," + (h - padding) + ")")
-				.call(xAxis);
+			    //Create X axis
+			    svg.append("g")
+			    	.attr("class", "x axis")
+			    	.attr("transform", "translate(0," + (h - padding) + ")")
+			    	.call(xAxis);
 
-			//Create Y axis
-			svg.append("g")
-				.attr("class", "y axis")
-				.attr("transform", "translate(" + padding + ",0)")
-				.call(yAxis);
+			    //Create Y axis
+			    svg.append("g")
+			    	.attr("class", "y axis")
+			    	.attr("transform", "translate(" + padding + ",0)")
+			    	.call(yAxis);
+
+            });
 
 			d3.select("p")
 				.on("click", function() {
