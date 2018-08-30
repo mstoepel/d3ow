@@ -18,45 +18,6 @@
 			var h = 500;
 			var padding = 30;
 
-			// Still need to figure out a way to properly read in ow.csv
-
-            var teams = ['All Teams', 'Houston Outlaws', 'Los Angeles Valiant'];
-            var teamValue = 'All Teams';
-
-            // var select = d3.select("body")
-            //     .append("select")
-            //     .attr("class", "select")
-            //     .on("change", onchange);
-            //
-            // var options = select
-            //     .selectAll("option")
-            //     .data(teams)
-            //     .enter()
-            //     .append("option")
-            //     .text(function(d) {return d; });
-            //
-            // function onchange() {
-            //     teamValue = d3.select("select").property('value')
-            //     td = tdataset.data.filter(function (d) { return d.name == teamValue;});
-            //     svg.selectAll("image")
-            //         .data(td[0].logo.main.svg)
-            //         .enter()
-            //         .append("svg:image")
-            //         .attr("xlink:href", td[0].logo.main.svg)
-            //         .attr("x", 50)
-            //         .attr("y", 50);
-            //     console.log(td[0].logo.main.svg);
-            // };
-
-            var teamSel = document.getElementById("team");
-            var teamSelect;
-
-            d3.select("teams")
-                .on("change", function() {
-                    teamSelect = teamSel.options[teamSel.selectedIndex].value;
-                    console.log(teamSelect);
-                });
-
 			var dataset;
 
 			var rowConverter = function(d) {
@@ -68,10 +29,6 @@
                     name: d.name
                 };
             }
-
-            d3.json('standings.json').then(function(data){
-			    tdataset = data;
-            });
 
 			d3.csv('ow.csv', rowConverter).then(function(data){
 			    // console.log(data)
@@ -224,31 +181,6 @@
 				    	.duration(1000)
 						.call(yAxis);
 
-
-					var select = d3.select("body")
-                .append("select")
-                .attr("class", "select")
-                .on("change", onchange);
-
-            var options = select
-                .selectAll("option")
-                .data(teams)
-                .enter()
-                .append("option")
-                .text(function(d) {return d; });
-
-            function onchange() {
-                teamValue = d3.select("select").property('value')
-                td = tdataset.data.filter(function (d) { return d.name == teamValue;});
-                svg.selectAll("image")
-                    .data(td[0].logo.main.svg)
-                    .enter()
-                    .append("svg:image")
-                    .attr("xlink:href", td[0].logo.main.svg)
-                    .attr("x", 50)
-                    .attr("y", 50);
-                console.log(td[0].logo.main.svg);
-            };
 
                 });
 

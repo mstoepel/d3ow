@@ -3,8 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Teams</title>
+    <script type="text/javascript" src="d3.js"></script>
+    <style type="text/css">
+			image {opacity: 0.2}
+		</style>
 </head>
 <body>
+    <script type="text/javascript">
+
+        //Width and height
+        var w = 1000;
+        var h = 500;
+        var padding = 30;
+
+        var teams = ['All Teams', 'Houston Outlaws', 'Los Angeles Valiant'];
+        var teamValue = 'All Teams';
+
+        var teamSel = document.getElementById("team");
+        var teamSelect;
+
+        //Create SVG element
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+        var select = d3.select("body")
+            .append("select")
+            .attr("class", "select")
+            .on("change", onchange);
+
+        select
+            .selectAll("option")
+            .data(teams)
+            .enter()
+            .append("option")
+            .text(function(d) {return d; });
+
+        function onchange() {
+            teamValue = d3.select("select").property('value')
+            td = tdataset.data.filter(function (d) { return d.name == teamValue;});
+
+            d3.selectAll("table")
+                .remove();
+
+            var record = d3.select("body")
+            .append("table");
+
+            var cols = ['TEAM', 'RECORD'];
+
+            record.append("thead")
+            .append("tr")
+            .selectAll("th")
+            .data(cols)
+            .enter()
+            .append("th")
+            .text(function(d) { return d;});
+
+            record.append("tbody")
+                .selectAll("tr")
+                .data(td)
+                .enter()
+                .append('tr')
+                .text(function(d) { return ['Wins: ', d.league.matchWin];});
+
+            svg.selectAll("image")
+                .remove();
+
+            svg.selectAll("image")
+                .data(td)
+                .enter()
+                .append("svg:image")
+                .attr("xlink:href", td[0].logo.main.svg)
+                .attr("x", w/4)
+                .attr("y", h/12);
+
+            // console.log(td[0].logo.main.svg);
+
+            svg.selectAll("text")
+                .remove();
+
+            svg.selectAll("text")
+                .data(td)
+                .enter()
+                .append("text")
+                .text(function(d) { return d.name;})
+                .attr("x", w/2)
+                .attr("y", 50)
+                .attr("fill", function(d) { return d.colors.primary.color;})
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "30px")
+                .attr("text-anchor", "middle");
+        };
+
+        d3.json('standings.json').then(function(data){
+			    tdataset = data;
+            });
+
+        </script>
 
 </body>
 </html>
